@@ -1,0 +1,78 @@
+mmynapi is a seperate standalone library that wraps the mmyn
+API.
+
+Initially, this will contain the erlang API, but being plain SOAP and JSON,
+there is nothing stopping this library from containing java, python, php, c,
+or any other versions that unstable minds may bring to bear.
+
+The first target is the JSON api. The SOAP api will be added later.
+
+JSON API
+--------
+
+URL = http://path/to/mmyn:CONFIGURED_PORT/json
+HTTP METHOD = POST
+mmyn-message() = 
+{
+    "mmyn.header" : { 
+        "vsn" : mmyn-msg-vsn(), 
+        "type" : mmyn-msg-type(), 
+        "system" = string(), 
+        "transaction_id": string() 
+     }, 
+     
+     "mmyn.body" = req.sendsms() | res.sendsms() | 
+                   req.reply() | res.reply() | 
+                   req.notify(), res.notify()
+};
+
+mmyn-msg-vsn() = 2.0.1;
+
+mmyn-msg-type() = "req.sendsms" | "req.reply" |
+                   "req.notify" | "res.sendsms" |
+                   "res.reply" | "res.notify";
+
+req.sendsms() = 
+{
+    "sender" = string(), 
+    "msisdn" = string() | array(), 
+    "message" = string() 
+};
+
+res.sendsms() = 
+{
+    "status" = number(), 
+    "detail" = string() 
+};
+
+req.reply() = 
+{ 
+    "id" = string(), 
+    "sender" = string(), 
+    "msisdn" = string(), 
+    "message" = string() 
+};
+
+res.reply() = 
+{
+    "status" = number(), 
+    "detail" = string() 
+};
+
+req.notify() = 
+{ 
+    "id" = string(), 
+    "shortcode" = string(), 
+    "keyword" = string(), 
+    "msisdn" = string(), 
+    "message" = string(), 
+    "max_ttl" = number() 
+};
+
+res.notify() = 
+{ 
+    "status" = number(), 
+    "detail" = string(), 
+    "wait_for_reply" = boolean(), 
+    "ttl" = number() 
+};
