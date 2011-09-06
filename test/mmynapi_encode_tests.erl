@@ -15,6 +15,10 @@ to_json_form_test_() ->
         {"Convert 'false' to 'false'",
                 ?_assertEqual(false, mmynapi_encode:to_json_form(false))},
         {"Convert 'null' to 'null'",
-            ?_assertEqual(null, mmynapi_encode:to_json_form(null))}
+            ?_assertEqual(null, mmynapi_encode:to_json_form(null))},
+        {"Convert Binary to Binary",
+            ?_assertEqual(<<"foobar">>, mmynapi_encode:to_json_form(<<"foobar">>))},
+        {"Convert List items properly",
+            ?_assertEqual([1, <<"foobar">>, false, null, <<"really-now?">>], mmynapi_encode:to_json_form([1,<<"foobar">>, false, null, 'really-now?']))}
    ].
 
