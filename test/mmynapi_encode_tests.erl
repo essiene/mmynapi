@@ -29,6 +29,20 @@ to_json_form_test_() ->
                         {<<"ttl">>, 30}]},
                 mmynapi_encode:to_json_form(#'res.notify'{
                         status=0,detail = <<"All okay">>,
-                        wait_for_reply=true, ttl=30}))}
+                        wait_for_reply=true, ttl=30}))},
+        {"Convert '#req.notify{}' record",
+            ?_assertEqual(
+                {[
+                        {<<"id">>, <<"0xdeadbeef">>},
+                        {<<"shortcode">>, 4000},
+                        {<<"keyword">>, <<"akeyword">>},
+                        {<<"msisdn">>, <<"+1234567">>},
+                        {<<"message">>, <<"some dumb message">>},
+                        {<<"max_ttl">>, 30}]},
+                mmynapi_encode:to_json_form(#'req.notify'{
+                        id= <<"0xdeadbeef">>, shortcode=4000,
+                        keyword= <<"akeyword">>, msisdn= <<"+1234567">>,
+                        message= <<"some dumb message">>, max_ttl=30}))}
+                        
    ].
 
