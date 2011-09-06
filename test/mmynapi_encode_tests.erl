@@ -94,6 +94,27 @@ to_json_form_test_() ->
                         {<<"transaction_id">>, <<"0xdeadbeef">>}]},
                 mmynapi_encode:to_json_form(#'mmyn.header'{
                         vsn= <<"2.0.1">>, type= <<"res.sendsms">>,
-                        system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>}))}
+                        system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>}))},
+        {"Convert '#mmyn.message{}' record",
+            ?_assertEqual(
+                {[
+                        {<<"header">>, 
+                            {[
+                            {<<"vsn">>, <<"2.0.1">>},
+                            {<<"type">>, <<"req.sendsms">>},
+                            {<<"system">>, <<"mmyn">>},
+                            {<<"transaction_id">>, <<"0xdeadbeef">>}]}}, 
+                        {<<"body">>, 
+                            {[ 
+                            {<<"sender">>, <<"ASENDER">>}, 
+                            {<<"msisdn">>, <<"+23481618">>},
+                            {<<"message">>, <<"a dumb message">>}]}}]},
+                mmynapi_encode:to_json_form(#'mmyn.message'{
+                        h=#'mmyn.header'{ 
+                            vsn= <<"2.0.1">>, type= <<"req.sendsms">>, 
+                            system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
+                        b=#'req.sendsms'{
+                            sender= <<"ASENDER">>, msisdn= <<"+23481618">>, 
+                            message= <<"a dumb message">>}}))}
    ].
 
