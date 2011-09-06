@@ -66,6 +66,24 @@ to_json_form_test_() ->
                         {<<"status">>, 0},
                         {<<"detail">>, <<"All okay">>}]},
                 mmynapi_encode:to_json_form(#'res.sendsms'{
-                        status=0,detail = <<"All okay">>}))}
+                        status=0,detail = <<"All okay">>}))},
+        {"Convert '#req.sendsms{}' record with SINGLE MSISDN",
+            ?_assertEqual(
+                {[
+                        {<<"sender">>, <<"ASENDER">>},
+                        {<<"msisdn">>, <<"+123456">>},
+                        {<<"message">>, <<"a dumb message">>}]},
+                mmynapi_encode:to_json_form(#'req.sendsms'{
+                        sender= <<"ASENDER">>, msisdn= <<"+123456">>, 
+                        message= <<"a dumb message">>}))},
+        {"Convert '#req.sendsms{}' record with MULTIPLE MSISDN",
+            ?_assertEqual(
+                {[
+                        {<<"sender">>, <<"ASENDER">>},
+                        {<<"msisdn">>, [<<"+23481618">>, <<"+123456">>]},
+                        {<<"message">>, <<"a dumb message">>}]},
+                mmynapi_encode:to_json_form(#'req.sendsms'{
+                        sender= <<"ASENDER">>, msisdn= [<<"+23481618">>, <<"+123456">>], 
+                        message= <<"a dumb message">>}))}
    ].
 
