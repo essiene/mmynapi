@@ -42,7 +42,13 @@ to_json_form_test_() ->
                 mmynapi_encode:to_json_form(#'req.notify'{
                         id= <<"0xdeadbeef">>, shortcode=4000,
                         keyword= <<"akeyword">>, msisdn= <<"+1234567">>,
-                        message= <<"some dumb message">>, max_ttl=30}))}
-                        
+                        message= <<"some dumb message">>, max_ttl=30}))},
+        {"Convert '#res.reply{}' record",
+            ?_assertEqual(
+                {[
+                        {<<"status">>, 0},
+                        {<<"detail">>, <<"All okay">>}]},
+                mmynapi_encode:to_json_form(#'res.reply'{
+                        status=0,detail = <<"All okay">>}))}
    ].
 
