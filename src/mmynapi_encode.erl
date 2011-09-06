@@ -46,20 +46,19 @@ to_json_form(#'res.notify'{status=S, detail=D, wait_for_reply=W, ttl=T}) ->
             {<<"detail">>, to_json_form(D)},
             {<<"wait_for_reply">>, to_json_form(W)},
             {<<"ttl">>, to_json_form(T)}]};
+to_json_form(null=M) ->
+    M;
+to_json_form(M) when is_boolean(M) ->
+    M;
 to_json_form(M) when is_atom(M) ->
     list_to_binary(atom_to_list(M));
 to_json_form([H|_]=L) when is_atom(H);is_list(H) ->
     to_json_form(L, []);
-to_json_form(L) when is_list(L) ->
-    list_to_binary(L);
 to_json_form(N) ->
     N.
 
 to_json_form([], Accm) ->
     lists:reverse(Accm);
-to_json_form([H|T], Accm) when is_atom(H) ->
-    to_json_form(T, [list_to_binary(atom_to_list(H))|Accm]);
-to_json_form([H|T], Accm) when is_list(H) ->
-    to_json_form(T, [list_to_binary(H)|Accm]);
-to_json_form([H|T], Accm) when is_number(H) ->
-    to_json_form(T, [H|Accm]).
+to_json_form([H|T], Accm) ->
+    F = to_json_form(H),
+    to_json_form(T, [F|Accm]).
