@@ -49,6 +49,16 @@ to_json_form_test_() ->
                         {<<"status">>, 0},
                         {<<"detail">>, <<"All okay">>}]},
                 mmynapi_encode:to_json_form(#'res.reply'{
-                        status=0,detail = <<"All okay">>}))}
+                        status=0,detail = <<"All okay">>}))},
+        {"Convert '#req.reply{}' record",
+            ?_assertEqual(
+                {[
+                        {<<"id">>, <<"0xdeadbeef">>},
+                        {<<"sender">>, <<"ASENDER">>},
+                        {<<"msisdn">>, <<"+123456">>},
+                        {<<"message">>, <<"a dumb message">>}]},
+                mmynapi_encode:to_json_form(#'req.reply'{
+                        id= <<"0xdeadbeef">>, sender= <<"ASENDER">>,
+                        msisdn= <<"+123456">>, message= <<"a dumb message">>}))}
    ].
 
