@@ -52,7 +52,7 @@ to_json_form(M) when is_boolean(M) ->
     M;
 to_json_form(M) when is_atom(M) ->
     list_to_binary(atom_to_list(M));
-to_json_form([H|_]=L) when is_atom(H);is_list(H) ->
+to_json_form(L) when is_list(L) ->
     to_json_form(L, []);
 to_json_form(N) ->
     N.
