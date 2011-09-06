@@ -12,6 +12,11 @@ to_json_test_() ->
                             system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
                         b=#'req.sendsms'{
                             sender= <<"ASENDER">>, msisdn= <<"+23481618">>, 
-                            message= <<"a dumb message">>}}))}
+                            message= <<"a dumb message">>}}))},
+        {"Test mmynapi:to_json/3",
+            ?_assertEqual(<<"{\"header\":{\"vsn\":\"2.0.1\",\"type\":\"req.sendsms\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"sender\":\"ASENDER\",\"msisdn\":\"+23481618\",\"message\":\"a dumb message\"}}">>,
+                mmynapi:to_json('mmyn', '0xdeadbeef', #'req.sendsms'{
+                            sender= <<"ASENDER">>, msisdn= <<"+23481618">>, 
+                            message= <<"a dumb message">>}))}
    ].
 
