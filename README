@@ -41,7 +41,7 @@ req.sendsms() =
 
 res.sendsms() = 
 {
-    "status" = number(), 
+    "status" = integer(), 
     "detail" = string() 
 };
 
@@ -55,24 +55,24 @@ req.reply() =
 
 res.reply() = 
 {
-    "status" = number(), 
+    "status" = integer(), 
     "detail" = string() 
 };
 
 req.notify() = 
 { 
     "id" = string(), 
-    "shortcode" = string(), 
+    "shortcode" = integer(), 
     "keyword" = string(), 
     "msisdn" = string(), 
     "message" = string(), 
-    "max_ttl" = number() 
+    "max_ttl" = integer() 
 };
 
 res.notify() = 
 { 
-    "status" = number(), 
+    "status" = integer(), 
     "detail" = string(), 
     "wait_for_reply" = boolean(), 
-    "ttl" = number() 
+    "ttl" = integer() 
 };
