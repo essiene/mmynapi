@@ -5,6 +5,6 @@
 
 
 to_json(#'mmyn.message'{}=Msg) ->
-    json:encode(mmynapi_encode:to_json_form(Msg));
+    jiffy:encode(mmynapi_encode:to_json_form(Msg));
 to_json(_) ->
     {error, invalid_message}.
