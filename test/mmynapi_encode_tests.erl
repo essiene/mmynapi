@@ -19,6 +19,16 @@ to_json_form_test_() ->
         {"Convert Binary to Binary",
             ?_assertEqual(<<"foobar">>, mmynapi_encode:to_json_form(<<"foobar">>))},
         {"Convert List items properly",
-            ?_assertEqual([1, <<"foobar">>, false, null, <<"really-now?">>], mmynapi_encode:to_json_form([1,<<"foobar">>, false, null, 'really-now?']))}
+            ?_assertEqual([1, <<"foobar">>, false, null, <<"really-now?">>], mmynapi_encode:to_json_form([1,<<"foobar">>, false, null, 'really-now?']))},
+        {"Convert '#res.notify{}' record",
+            ?_assertEqual(
+                {[
+                        {<<"status">>, 0},
+                        {<<"detail">>, <<"All okay">>},
+                        {<<"wait_for_reply">>, true},
+                        {<<"ttl">>, 30}]},
+                mmynapi_encode:to_json_form(#'res.notify'{
+                        status=0,detail = <<"All okay">>,
+                        wait_for_reply=true, ttl=30}))}
    ].
 
