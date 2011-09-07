@@ -21,6 +21,10 @@ to_json_test_() ->
         {"Convert #'res.sendsms'{} to JSON via mmynapi:to_json/3",
             ?_assertEqual(<<"{\"header\":{\"vsn\":\"2.0.1\",\"type\":\"res.sendsms\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All Okay\"}}">>,
                 mmynapi:to_json('mmyn', '0xdeadbeef', #'res.sendsms'{
+                            status=0, detail= <<"All Okay">>}))},
+        {"Convert #'res.reply'{} to JSON via mmynapi:to_json/3",
+            ?_assertEqual(<<"{\"header\":{\"vsn\":\"2.0.1\",\"type\":\"res.reply\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All Okay\"}}">>,
+                mmynapi:to_json('mmyn', '0xdeadbeef', #'res.reply'{
                             status=0, detail= <<"All Okay">>}))}
    ].
 
