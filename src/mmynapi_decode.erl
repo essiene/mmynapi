@@ -1,14 +1,14 @@
 -module(mmynapi_decode).
--export([decode_message/1, decode_header/1, decode_body/2]).
+-export([to_message/1, to_header/1, to_body/2]).
 -include("mmynapi.hrl").
 
 
-decode_message({PropList}) ->
+to_message({PropList}) ->
     case proplists:get_value(<<"header">>, PropList) of
         undefined ->
             {error, no_header};
         Header ->
-            case decode_header(Header) of 
+            case to_header(Header) of 
                 {error, Reason} ->
                     {error, Reason};
                 {ok, #'mmyn.header'{type=MsgType}=Hrecord} -> 
@@ -16,7 +16,7 @@ decode_message({PropList}) ->
                         undefined -> 
                             {error, no_body}; 
                         Body -> 
-                            case decode_body(MsgType, Body) of
+                            case to_body(MsgType, Body) of
                                 {error, Reason} ->
                                     {error, Reason};
                                 {ok, Brecord} ->
@@ -26,7 +26,7 @@ decode_message({PropList}) ->
             end
     end.
 
-decode_header({PropList}) ->
+to_header({PropList}) ->
     case proplists:get_value(<<"vsn">>, PropList) of
         undefined ->
             {error, no_version};
@@ -51,7 +51,7 @@ decode_header({PropList}) ->
             {error, {wrong_msg_vsn, [{current_msg_vsn, ?MMYN_MSG_VSN}, {parsed_msg_vsn, N}]}}
     end.
 
-decode_body(<<"req.sendsms">>, {PropList}) ->
+to_body(<<"req.sendsms">>, {PropList}) ->
     case proplists:get_value(<<"sender">>, PropList) of
         undefined ->
             {error, no_sender};
