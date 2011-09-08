@@ -113,5 +113,37 @@ to_body(<<"res.reply">>, {PropList}) ->
                 Detail -> 
                     {ok, #'res.reply'{status=Status, detail=Detail}}
             end
+    end;
+to_body(<<"req.notify">>, {PropList}) ->
+    case proplists:get_value(<<"id">>, PropList) of
+        undefined ->
+            {error, no_id};
+        Id ->
+            case proplists:get_value(<<"shortcode">>, PropList) of
+                undefined ->
+                    {error, no_shortcode};
+                Shortcode ->
+                    case proplists:get_value(<<"keywords">>, PropList) of
+                        undefined ->
+                            {error, no_keywords};
+                        Keywords ->
+                            case proplists:get_value(<<"msisdn">>, PropList) of
+                                undefined ->
+                                    {error, no_msisdn};
+                                Msisdn ->
+                                    case proplists:get_value(<<"message">>, PropList) of
+                                        undefined ->
+                                            {error, no_message};
+                                        Message ->
+                                            case proplists:get_value(<<"max_ttl">>, PropList) of
+                                                undefined ->
+                                                    {error, no_max_ttl};
+                                                MaxTtl -> 
+                                                    {ok, #'req.notify'{id=Id, shortcode=Shortcode, keywords=Keywords,
+                                                                       msisdn=Msisdn, message=Message, max_ttl=MaxTtl}}
+                                            end
+                                    end
+                            end
+                    end
+            end
     end.
-
