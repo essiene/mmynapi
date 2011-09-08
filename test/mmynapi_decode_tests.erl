@@ -141,6 +141,73 @@ decode_body_test_() ->
                         mmynapi_decode:to_body(<<"res.reply">>, {[{<<"detail">>, <<"oops! my bad...">>}]}))},
         {"Error out when res.reply JSON form is missing a 'detail' field",
             ?_assertEqual({error, no_detail}, 
-                        mmynapi_decode:to_body(<<"res.reply">>, {[{<<"status">>, 15}]}))}
+                        mmynapi_decode:to_body(<<"res.reply">>, {[{<<"status">>, 15}]}))},
+        %%
+        %% req.notify tests start from here
+        %%
+
+        {"Convert a correct req.notify in JSON form to #'req.notify'{} record",
+            ?_assertEqual({ok, #'req.notify'{
+                        id= <<"0xcafebabe">>,
+                        shortcode = 5999,
+                        keywords = [<<"kwd1">>, <<"kwd2">>],
+                        msisdn= <<"+123456">>, 
+                        message= <<"a dumb message">>,
+                        max_ttl= 60}}, 
+                        mmynapi_decode:to_body(<<"req.notify">>, {[ 
+                                    {<<"id">>, <<"0xcafebabe">>},
+                                    {<<"shortcode">>, 5999}, 
+                                    {<<"keywords">>, [<<"kwd1">>, <<"kwd2">>]},
+                                    {<<"msisdn">>, <<"+123456">>},
+                                    {<<"message">>, <<"a dumb message">>},
+                                    {<<"max_ttl">>, 60}]}))},
+        {"Error out when req.notify JSON form is missing a 'sender' field",
+            ?_assertEqual({error, no_id}, 
+                        mmynapi_decode:to_body(<<"req.notify">>, {[ 
+                                    {<<"shortcode">>, 5999}, 
+                                    {<<"keywords">>, [<<"kwd1">>, <<"kwd2">>]},
+                                    {<<"msisdn">>, <<"+123456">>},
+                                    {<<"message">>, <<"a dumb message">>},
+                                    {<<"max_ttl">>, 60}]}))},
+        {"Error out when req.notify JSON form is missing a 'shortcode' field",
+            ?_assertEqual({error, no_shortcode}, 
+                        mmynapi_decode:to_body(<<"req.notify">>, {[ 
+                                    {<<"id">>, <<"0xcafebabe">>},
+                                    {<<"keywords">>, [<<"kwd1">>, <<"kwd2">>]},
+                                    {<<"msisdn">>, <<"+123456">>},
+                                    {<<"message">>, <<"a dumb message">>},
+                                    {<<"max_ttl">>, 60}]}))},
+        {"Error out when req.notify JSON form is missing a 'keywords' field",
+            ?_assertEqual({error, no_keywords}, 
+                        mmynapi_decode:to_body(<<"req.notify">>, {[ 
+                                    {<<"id">>, <<"0xcafebabe">>},
+                                    {<<"shortcode">>, 5999}, 
+                                    {<<"msisdn">>, <<"+123456">>},
+                                    {<<"message">>, <<"a dumb message">>},
+                                    {<<"max_ttl">>, 60}]}))},
+        {"Error out when req.notify JSON form is missing a 'msisdn' field",
+            ?_assertEqual({error, no_msisdn}, 
+                        mmynapi_decode:to_body(<<"req.notify">>, {[ 
+                                    {<<"id">>, <<"0xcafebabe">>},
+                                    {<<"shortcode">>, 5999}, 
+                                    {<<"keywords">>, [<<"kwd1">>, <<"kwd2">>]},
+                                    {<<"message">>, <<"a dumb message">>},
+                                    {<<"max_ttl">>, 60}]}))},
+        {"Error out when req.notify JSON form is missing a 'message' field",
+            ?_assertEqual({error, no_message}, 
+                        mmynapi_decode:to_body(<<"req.notify">>, {[ 
+                                    {<<"id">>, <<"0xcafebabe">>},
+                                    {<<"shortcode">>, 5999}, 
+                                    {<<"keywords">>, [<<"kwd1">>, <<"kwd2">>]},
+                                    {<<"msisdn">>, <<"+123456">>},
+                                    {<<"max_ttl">>, 60}]}))},
+        {"Error out when req.notify JSON form is missing a 'max_ttl' field",
+            ?_assertEqual({error, no_max_ttl}, 
+                        mmynapi_decode:to_body(<<"req.notify">>, {[ 
+                                    {<<"id">>, <<"0xcafebabe">>},
+                                    {<<"shortcode">>, 5999}, 
+                                    {<<"keywords">>, [<<"kwd1">>, <<"kwd2">>]},
+                                    {<<"msisdn">>, <<"+123456">>},
+                                    {<<"message">>, <<"a dumb message">>}]}))}
     ].
 
