@@ -40,7 +40,7 @@
 -record('req.notify', {
         id,
         shortcode,
-        keyword,
+        keywords,
         msisdn,
         message,
         max_ttl}).

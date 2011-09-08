@@ -32,11 +32,11 @@ to_json_form(#'res.reply'{status=S, detail=D}) ->
     {[
             {<<"status">>, to_json_form(S)},
             {<<"detail">>, to_json_form(D)}]};
-to_json_form(#'req.notify'{id=Id, shortcode=S, keyword=K, msisdn=M, message=Msg, max_ttl=MaxTtl}) ->
+to_json_form(#'req.notify'{id=Id, shortcode=S, keywords=K, msisdn=M, message=Msg, max_ttl=MaxTtl}) ->
     {[
             {<<"id">>, to_json_form(Id)},
             {<<"shortcode">>, to_json_form(S)},
-            {<<"keyword">>, to_json_form(K)},
+            {<<"keywords">>, to_json_form(K)},
             {<<"msisdn">>, to_json_form(M)},
             {<<"message">>, to_json_form(Msg)},
             {<<"max_ttl">>, to_json_form(MaxTtl)}]};

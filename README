@@ -63,7 +63,7 @@ req.notify() =
 { 
     "id" = string(), 
     "shortcode" = integer(), 
-    "keyword" = string(), 
+    "keywords" = array(), 
     "msisdn" = string(), 
     "message" = string(), 
     "max_ttl" = integer() 
