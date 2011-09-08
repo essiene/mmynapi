@@ -101,19 +101,19 @@ to_json_form_test_() ->
         {"Convert '#mmyn.header{}' record",
             ?_assertEqual(
                 {[
-                        {<<"vsn">>, <<"2.0.1">>},
+                        {<<"vsn">>, [2,0,1]},
                         {<<"type">>, <<"res.sendsms">>},
                         {<<"system">>, <<"mmyn">>},
                         {<<"transaction_id">>, <<"0xdeadbeef">>}]},
                 mmynapi_encode:to_json_form(#'mmyn.header'{
-                        vsn= <<"2.0.1">>, type= <<"res.sendsms">>,
+                        vsn=[2,0,1], type= <<"res.sendsms">>,
                         system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>}))},
         {"Convert '#mmyn.message{}' record",
             ?_assertEqual(
                 {[
                         {<<"header">>, 
                             {[
-                            {<<"vsn">>, <<"2.0.1">>},
+                            {<<"vsn">>, [2,0,1]},
                             {<<"type">>, <<"req.sendsms">>},
                             {<<"system">>, <<"mmyn">>},
                             {<<"transaction_id">>, <<"0xdeadbeef">>}]}}, 
@@ -124,7 +124,7 @@ to_json_form_test_() ->
                             {<<"message">>, <<"a dumb message">>}]}}]},
                 mmynapi_encode:to_json_form(#'mmyn.message'{
                         h=#'mmyn.header'{ 
-                            vsn= <<"2.0.1">>, type= <<"req.sendsms">>, 
+                            vsn= [2,0,1], type= <<"req.sendsms">>, 
                             system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
                         b=#'req.sendsms'{
                             sender= <<"ASENDER">>, msisdn= <<"+23481618">>, 
