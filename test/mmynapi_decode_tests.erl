@@ -71,6 +71,44 @@ decode_body_test_() ->
             ?_assertEqual({error, no_message}, 
                         mmynapi_decode:to_body(<<"req.sendsms">>, {[ 
                                     {<<"sender">>, <<"ASENDER">>}, 
-                                    {<<"msisdn">>, [<<"+123456">>, <<"+2345678">>]}]}))}
+                                    {<<"msisdn">>, [<<"+123456">>, <<"+2345678">>]}]}))},
+        %%
+        %% req.reply tests start from here
+        %%
+        {"Convert a correct req.reply in JSON form to #'req.reply'{} record",
+            ?_assertEqual({ok, #'req.reply'{
+                        id= <<"0xcafebabe">>,
+                        sender= <<"ASENDER">>, 
+                        msisdn= <<"+123456">>, 
+                        message= <<"a dumb message">>}}, 
+                        mmynapi_decode:to_body(<<"req.reply">>, {[ 
+                                    {<<"id">>, <<"0xcafebabe">>},
+                                    {<<"sender">>, <<"ASENDER">>}, 
+                                    {<<"msisdn">>, <<"+123456">>}, 
+                                    {<<"message">>, <<"a dumb message">>}]}))},
+        {"Error out when req.reply JSON form is missing a 'id' field",
+            ?_assertEqual({error, no_id}, 
+                        mmynapi_decode:to_body(<<"req.reply">>, {[ 
+                                    {<<"sender">>, <<"ASENDER">>},
+                                    {<<"msisdn">>, <<"+123456">>}, 
+                                    {<<"message">>, <<"a dumb message">>}]}))},
+        {"Error out when req.reply JSON form is missing a 'sender' field",
+            ?_assertEqual({error, no_sender}, 
+                        mmynapi_decode:to_body(<<"req.reply">>, {[ 
+                                    {<<"id">>, <<"0xcafebabe">>},
+                                    {<<"msisdn">>, <<"+123456">>}, 
+                                    {<<"message">>, <<"a dumb message">>}]}))},
+        {"Error out when req.reply JSON form is missing a 'msisdn' field",
+            ?_assertEqual({error, no_msisdn}, 
+                        mmynapi_decode:to_body(<<"req.reply">>, {[ 
+                                    {<<"id">>, <<"0xcafebabe">>},
+                                    {<<"sender">>, <<"ASENDER">>}, 
+                                    {<<"message">>, <<"a dumb message">>}]}))},
+        {"Error out when req.reply JSON form is missing a 'message' field",
+            ?_assertEqual({error, no_message}, 
+                        mmynapi_decode:to_body(<<"req.reply">>, {[ 
+                                    {<<"id">>, <<"0xcafebabe">>},
+                                    {<<"sender">>, <<"ASENDER">>}, 
+                                    {<<"msisdn">>, <<"+123456">>}]}))}
     ].
 
