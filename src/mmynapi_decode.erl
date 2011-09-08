@@ -68,6 +68,18 @@ to_body(<<"req.sendsms">>, {PropList}) ->
                     end
             end
     end;
+to_body(<<"res.sendsms">>, {PropList}) ->
+    case proplists:get_value(<<"status">>, PropList) of
+        undefined ->
+            {error, no_status};
+        Status->
+            case proplists:get_value(<<"detail">>, PropList) of
+                undefined ->
+                    {error, no_detail};
+                Detail -> 
+                    {ok, #'res.sendsms'{status=Status, detail=Detail}}
+            end
+    end;
 to_body(<<"req.reply">>, {PropList}) ->
     case proplists:get_value(<<"id">>, PropList) of
         undefined ->
