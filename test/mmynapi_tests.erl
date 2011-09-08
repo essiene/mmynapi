@@ -79,5 +79,15 @@ from_json_test_() ->
                             system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
                         b=#'res.reply'{
                             status= 0, detail= <<"All okay!">>}}},
-                    mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"res.reply\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All okay!\"}}">>))}
+                    mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"res.reply\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All okay!\"}}">>))},
+        {"Convert req.notify JSON document to #'mmyn.message'{} ",
+            ?_assertEqual({ok, #'mmyn.message'{
+                        h=#'mmyn.header'{ 
+                            vsn= [2,0,1], type= <<"req.notify">>, 
+                            system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
+                        b=#'req.notify'{id= <<"0xcafebabe">>,
+                            shortcode= 5999, keywords=[<<"kwd1">>],
+                            msisdn= <<"+23481618">>, message= <<"a dumb message">>,
+                            max_ttl=60 }}},
+                mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"req.notify\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"id\":\"0xcafebabe\", \"shortcode\":5999,\"keywords\":[\"kwd1\"],\"msisdn\":\"+23481618\",\"message\":\"a dumb message\",\"max_ttl\":60}}">>))}
     ].
