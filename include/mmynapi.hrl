@@ -1,7 +1,7 @@
 -ifndef(mmynapi).
 -define(mmynapi, true).
 
--define(MMYN_MSG_VSN, '2.0.1').
+-define(MMYN_MSG_VSN, [2,0,1]).
 
 -define(MMYN_REQ_SENDSMS, "request.sendsms").
 -define(MMYN_RES_SENDSMS, "response.sendsms").
