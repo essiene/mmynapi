@@ -44,3 +44,24 @@ to_json_test_() ->
                             wait_for_reply=false, ttl=60}))}
    ].
 
+from_json_test_() ->
+    [
+        {"Convert req.sendsms JSON document to #'mmyn.message'{} ",
+            ?_assertEqual({ok, #'mmyn.message'{
+                        h=#'mmyn.header'{ 
+                            vsn= [2,0,1], type= <<"req.sendsms">>, 
+                            system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
+                        b=#'req.sendsms'{
+                            sender= <<"ASENDER">>, msisdn= <<"+23481618">>, 
+                            message= <<"a dumb message">>}}},
+                    mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"req.sendsms\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"sender\":\"ASENDER\",\"msisdn\":\"+23481618\",\"message\":\"a dumb message\"}}">>))},
+        {"Convert req.reply JSON document to #'mmyn.message'{} ",
+            ?_assertEqual({ok, #'mmyn.message'{
+                        h=#'mmyn.header'{ 
+                            vsn= [2,0,1], type= <<"req.reply">>, 
+                            system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
+                        b=#'req.reply'{id= <<"0xcafebabe">>,
+                            sender= <<"ASENDER">>, msisdn= <<"+23481618">>, 
+                            message= <<"a dumb message">>}}},
+                mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"req.reply\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"id\":\"0xcafebabe\", \"sender\":\"ASENDER\",\"msisdn\":\"+23481618\",\"message\":\"a dumb message\"}}">>))}
+    ].
