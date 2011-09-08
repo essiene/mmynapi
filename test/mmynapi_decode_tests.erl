@@ -208,6 +208,44 @@ decode_body_test_() ->
                                     {<<"shortcode">>, 5999}, 
                                     {<<"keywords">>, [<<"kwd1">>, <<"kwd2">>]},
                                     {<<"msisdn">>, <<"+123456">>},
-                                    {<<"message">>, <<"a dumb message">>}]}))}
+                                    {<<"message">>, <<"a dumb message">>}]}))},
+        %%
+        %% res.notify tests start from here
+        %%
+        {"Convert a correct res.notify in JSON form to #'res.notify'{} record",
+            ?_assertEqual({ok, #'res.notify'{
+                        status= 15,
+                        detail= <<"oops! my bad...">>,
+                        wait_for_reply=true,
+                        ttl=60}}, 
+                        mmynapi_decode:to_body(<<"res.notify">>, {[ 
+                                    {<<"status">>, 15}, 
+                                    {<<"detail">>, <<"oops! my bad...">>},
+                                    {<<"wait_for_reply">>, true},
+                                    {<<"ttl">>, 60}]}))},
+        {"Error out when res.notify JSON form is missing a 'status' field",
+            ?_assertEqual({error, no_status}, 
+                        mmynapi_decode:to_body(<<"res.notify">>, {[ 
+                                    {<<"detail">>, <<"oops! my bad...">>},
+                                    {<<"wait_for_reply">>, true},
+                                    {<<"ttl">>, 60}]}))},
+        {"Error out when res.notify JSON form is missing a 'detail' field",
+            ?_assertEqual({error, no_detail}, 
+                        mmynapi_decode:to_body(<<"res.notify">>, {[ 
+                                    {<<"status">>, 15}, 
+                                    {<<"wait_for_reply">>, true},
+                                    {<<"ttl">>, 60}]}))},
+        {"Error out when res.notify JSON form is missing a 'wait_for_reply' field",
+            ?_assertEqual({error, no_wait_for_reply}, 
+                        mmynapi_decode:to_body(<<"res.notify">>, {[ 
+                                    {<<"status">>, 15}, 
+                                    {<<"detail">>, <<"oops! my bad...">>},
+                                    {<<"ttl">>, 60}]}))},
+        {"Error out when res.notify JSON form is missing a 'ttl' field",
+            ?_assertEqual({error, no_ttl}, 
+                        mmynapi_decode:to_body(<<"res.notify">>, {[ 
+                                    {<<"status">>, 15}, 
+                                    {<<"detail">>, <<"oops! my bad...">>},
+                                    {<<"wait_for_reply">>, true}]}))}
     ].
 
