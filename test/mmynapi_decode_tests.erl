@@ -45,3 +45,32 @@ decode_header_test_() ->
                                     {<<"type">>, <<"res.sendsms">>}]}))} 
     ].
 
+
+decode_body_test_() ->
+	[
+        {"Convert a correct req.sendsms in JSON form to #'req.sendsms'{} record",
+            ?_assertEqual({ok, #'req.sendsms'{
+                        sender= <<"ASENDER">>, 
+                        msisdn= [<<"+123456">>,<<"+2345678">>], 
+                        message= <<"a dumb message">>}}, 
+                        mmynapi_decode:to_body(<<"req.sendsms">>, {[ 
+                                    {<<"sender">>, <<"ASENDER">>}, 
+                                    {<<"msisdn">>, [<<"+123456">>, <<"+2345678">>]}, 
+                                    {<<"message">>, <<"a dumb message">>}]}))},
+        {"Error out when req.sendsms JSON form is missing a 'sender' field",
+            ?_assertEqual({error, no_sender}, 
+                        mmynapi_decode:to_body(<<"req.sendsms">>, {[ 
+                                    {<<"msisdn">>, [<<"+123456">>, <<"+2345678">>]}, 
+                                    {<<"message">>, <<"a dumb message">>}]}))},
+        {"Error out when req.sendsms JSON form is missing a 'msisdn' field",
+            ?_assertEqual({error, no_msisdn}, 
+                        mmynapi_decode:to_body(<<"req.sendsms">>, {[ 
+                                    {<<"sender">>, <<"ASENDER">>}, 
+                                    {<<"message">>, <<"a dumb message">>}]}))},
+        {"Error out when req.sendsms JSON form is missing a 'message' field",
+            ?_assertEqual({error, no_message}, 
+                        mmynapi_decode:to_body(<<"req.sendsms">>, {[ 
+                                    {<<"sender">>, <<"ASENDER">>}, 
+                                    {<<"msisdn">>, [<<"+123456">>, <<"+2345678">>]}]}))}
+    ].
+
