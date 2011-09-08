@@ -73,6 +73,22 @@ decode_body_test_() ->
                                     {<<"sender">>, <<"ASENDER">>}, 
                                     {<<"msisdn">>, [<<"+123456">>, <<"+2345678">>]}]}))},
         %%
+        %% res.sendsms tests start from here
+        %%
+        {"Convert a correct res.sendsms in JSON form to #'res.sendsms'{} record",
+            ?_assertEqual({ok, #'res.sendsms'{
+                        status= 15,
+                        detail= <<"oops! my bad...">>}}, 
+                        mmynapi_decode:to_body(<<"res.sendsms">>, {[ 
+                                    {<<"status">>, 15}, 
+                                    {<<"detail">>, <<"oops! my bad...">>}]}))},
+        {"Error out when res.sendsms JSON form is missing a 'status' field",
+            ?_assertEqual({error, no_status}, 
+                        mmynapi_decode:to_body(<<"res.sendsms">>, {[{<<"detail">>, <<"oops! my bad...">>}]}))},
+        {"Error out when res.sendsms JSON form is missing a 'detail' field",
+            ?_assertEqual({error, no_detail}, 
+                        mmynapi_decode:to_body(<<"res.sendsms">>, {[{<<"status">>, 15}]}))},
+        %%
         %% req.reply tests start from here
         %%
         {"Convert a correct req.reply in JSON form to #'req.reply'{} record",
