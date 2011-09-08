@@ -1,0 +1,13 @@
+Add a generic fault message body type that is returned when an exception is encountered.
+
+An exception is defined as any situation that occurs during processing that prevents the
+requested message type to start processing. Examples are:
+
+1. Wrong message vsn in header
+2. invalid types in header
+3. Missing mandatory fields in messages
+4. Server exceptions thrown during processing.
+
+The only time a valid response is received from a message is when that routine has been
+processed and the response is as a direct result of processing that message. Any other
+situation that arises, is considered an exception
