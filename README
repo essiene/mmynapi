@@ -26,7 +26,7 @@ mmyn-message() =
                    req.notify(), res.notify()
 };
 
-mmyn-msg-vsn() = 2.0.1;
+mmyn-msg-vsn() = [Major,Minor,PatchLevel]; //current version is [2,0,1]
 
 mmyn-msg-type() = "req.sendsms" | "req.reply" |
                    "req.notify" | "res.sendsms" |
