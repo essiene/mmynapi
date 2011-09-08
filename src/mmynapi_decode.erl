@@ -146,4 +146,28 @@ to_body(<<"req.notify">>, {PropList}) ->
                             end
                     end
             end
+    end;
+to_body(<<"res.notify">>, {PropList}) ->
+    case proplists:get_value(<<"status">>, PropList) of
+        undefined ->
+            {error, no_status};
+        Status->
+            case proplists:get_value(<<"detail">>, PropList) of
+                undefined ->
+                    {error, no_detail};
+                Detail -> 
+                    case proplists:get_value(<<"wait_for_reply">>, PropList) of
+                        undefined ->
+                            {error, no_wait_for_reply};
+                        WaitForReply ->
+                            case proplists:get_value(<<"ttl">>, PropList) of
+                                undefined ->
+                                    {error, no_ttl};
+                                Ttl -> 
+                                    {ok, #'res.notify'{status=Status, detail=Detail, 
+                                            wait_for_reply=WaitForReply, ttl=Ttl}}
+                            end
+                    end
+            end
     end.
+
