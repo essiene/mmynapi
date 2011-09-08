@@ -67,4 +67,26 @@ to_body(<<"req.sendsms">>, {PropList}) ->
                             {ok, #'req.sendsms'{sender=Sender, msisdn=Msisdn, message=Message}}
                     end
             end
+    end;
+to_body(<<"req.reply">>, {PropList}) ->
+    case proplists:get_value(<<"id">>, PropList) of
+        undefined ->
+            {error, no_id};
+        Id ->
+            case proplists:get_value(<<"sender">>, PropList) of
+                undefined ->
+                    {error, no_sender};
+                Sender ->
+                    case proplists:get_value(<<"msisdn">>, PropList) of
+                        undefined ->
+                            {error, no_msisdn};
+                        Msisdn ->
+                            case proplists:get_value(<<"message">>, PropList) of
+                                undefined ->
+                                    {error, no_message};
+                                Message ->
+                                    {ok, #'req.reply'{id=Id, sender=Sender, msisdn=Msisdn, message=Message}}
+                            end
+                    end
+            end
     end.
