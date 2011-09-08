@@ -101,4 +101,17 @@ to_body(<<"req.reply">>, {PropList}) ->
                             end
                     end
             end
+    end;
+to_body(<<"res.reply">>, {PropList}) ->
+    case proplists:get_value(<<"status">>, PropList) of
+        undefined ->
+            {error, no_status};
+        Status->
+            case proplists:get_value(<<"detail">>, PropList) of
+                undefined ->
+                    {error, no_detail};
+                Detail -> 
+                    {ok, #'res.reply'{status=Status, detail=Detail}}
+            end
     end.
+
