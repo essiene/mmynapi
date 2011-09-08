@@ -1,5 +1,5 @@
 -module(mmynapi).
--export([to_json/1, to_json/3]).
+-export([to_json/1, to_json/3, from_json/1]).
 
 -include("mmynapi.hrl").
 
@@ -51,3 +51,6 @@ to_json(#'mmyn.message'{}=Msg) ->
     jiffy:encode(mmynapi_encode:to_json_form(Msg));
 to_json(_) ->
     {error, invalid_message}.
+
+from_json(Json) ->
+    mmynapi_decode:to_message(jiffy:decode(Json)).
