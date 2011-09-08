@@ -30,18 +30,31 @@ to_json_form_test_() ->
                 mmynapi_encode:to_json_form(#'res.notify'{
                         status=0,detail = <<"All okay">>,
                         wait_for_reply=true, ttl=30}))},
-        {"Convert '#req.notify{}' record",
+        {"Convert '#req.notify{}' record, with single keyword",
             ?_assertEqual(
                 {[
                         {<<"id">>, <<"0xdeadbeef">>},
                         {<<"shortcode">>, 4000},
-                        {<<"keyword">>, <<"akeyword">>},
+                        {<<"keywords">>, [<<"akeyword">>]},
                         {<<"msisdn">>, <<"+1234567">>},
                         {<<"message">>, <<"some dumb message">>},
                         {<<"max_ttl">>, 30}]},
                 mmynapi_encode:to_json_form(#'req.notify'{
                         id= <<"0xdeadbeef">>, shortcode=4000,
-                        keyword= <<"akeyword">>, msisdn= <<"+1234567">>,
+                        keywords= [<<"akeyword">>], msisdn= <<"+1234567">>,
+                        message= <<"some dumb message">>, max_ttl=30}))},
+        {"Convert '#req.notify{}' record, with multiple keywords",
+            ?_assertEqual(
+                {[
+                        {<<"id">>, <<"0xdeadbeef">>},
+                        {<<"shortcode">>, 4000},
+                        {<<"keywords">>, [<<"kwd1">>, <<"kwd2">>]},
+                        {<<"msisdn">>, <<"+1234567">>},
+                        {<<"message">>, <<"some dumb message">>},
+                        {<<"max_ttl">>, 30}]},
+                mmynapi_encode:to_json_form(#'req.notify'{
+                        id= <<"0xdeadbeef">>, shortcode=4000,
+                        keywords= [<<"kwd1">>, <<"kwd2">>], msisdn= <<"+1234567">>,
                         message= <<"some dumb message">>, max_ttl=30}))},
         {"Convert '#res.reply{}' record",
             ?_assertEqual(

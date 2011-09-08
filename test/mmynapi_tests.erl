@@ -31,11 +31,11 @@ to_json_test_() ->
             ?_assertEqual(<<"{\"header\":{\"vsn\":\"2.0.1\",\"type\":\"res.reply\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All Okay\"}}">>,
                 mmynapi:to_json('mmyn', '0xdeadbeef', #'res.reply'{
                             status=0, detail= <<"All Okay">>}))},
-        {"Convert #'req.nofify'{} to JSON via mmynapi:to_json/3",
-            ?_assertEqual(<<"{\"header\":{\"vsn\":\"2.0.1\",\"type\":\"req.notify\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"id\":\"0xcafebabe\",\"shortcode\":4000,\"keyword\":\"kwd\",\"msisdn\":\"+23481618\",\"message\":\"a dumb message\",\"max_ttl\":30}}">>,
+        {"Convert #'req.notify'{} to JSON via mmynapi:to_json/3",
+            ?_assertEqual(<<"{\"header\":{\"vsn\":\"2.0.1\",\"type\":\"req.notify\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"id\":\"0xcafebabe\",\"shortcode\":4000,\"keywords\":[\"kwd\"],\"msisdn\":\"+23481618\",\"message\":\"a dumb message\",\"max_ttl\":30}}">>,
                 mmynapi:to_json('mmyn', '0xdeadbeef', #'req.notify'{
                             id= <<"0xcafebabe">>, shortcode=4000,
-                            keyword= <<"kwd">>, msisdn= <<"+23481618">>, 
+                            keywords= [<<"kwd">>], msisdn= <<"+23481618">>, 
                             message= <<"a dumb message">>, max_ttl=30}))},
         {"Convert #'res.notify'{} to JSON via mmynapi:to_json/3",
             ?_assertEqual(<<"{\"header\":{\"vsn\":\"2.0.1\",\"type\":\"res.notify\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All Okay\",\"wait_for_reply\":false,\"ttl\":60}}">>,
