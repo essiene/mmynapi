@@ -55,6 +55,14 @@ from_json_test_() ->
                             sender= <<"ASENDER">>, msisdn= <<"+23481618">>, 
                             message= <<"a dumb message">>}}},
                     mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"req.sendsms\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"sender\":\"ASENDER\",\"msisdn\":\"+23481618\",\"message\":\"a dumb message\"}}">>))},
+        {"Convert res.sendsms JSON document to #'mmyn.message'{} ",
+            ?_assertEqual({ok, #'mmyn.message'{
+                        h=#'mmyn.header'{ 
+                            vsn= [2,0,1], type= <<"res.sendsms">>, 
+                            system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
+                        b=#'res.sendsms'{
+                            status= 0, detail= <<"All okay!">>}}},
+                    mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"res.sendsms\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All okay!\"}}">>))},
         {"Convert req.reply JSON document to #'mmyn.message'{} ",
             ?_assertEqual({ok, #'mmyn.message'{
                         h=#'mmyn.header'{ 
@@ -63,5 +71,13 @@ from_json_test_() ->
                         b=#'req.reply'{id= <<"0xcafebabe">>,
                             sender= <<"ASENDER">>, msisdn= <<"+23481618">>, 
                             message= <<"a dumb message">>}}},
-                mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"req.reply\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"id\":\"0xcafebabe\", \"sender\":\"ASENDER\",\"msisdn\":\"+23481618\",\"message\":\"a dumb message\"}}">>))}
+                mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"req.reply\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"id\":\"0xcafebabe\", \"sender\":\"ASENDER\",\"msisdn\":\"+23481618\",\"message\":\"a dumb message\"}}">>))},
+        {"Convert res.reply JSON document to #'mmyn.message'{} ",
+            ?_assertEqual({ok, #'mmyn.message'{
+                        h=#'mmyn.header'{ 
+                            vsn= [2,0,1], type= <<"res.reply">>, 
+                            system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
+                        b=#'res.reply'{
+                            status= 0, detail= <<"All okay!">>}}},
+                    mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"res.reply\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All okay!\"}}">>))}
     ].
