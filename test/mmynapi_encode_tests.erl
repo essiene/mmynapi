@@ -20,6 +20,13 @@ to_json_form_test_() ->
             ?_assertEqual(<<"foobar">>, mmynapi_encode:to_json_form(<<"foobar">>))},
         {"Convert List items properly",
             ?_assertEqual([1, <<"foobar">>, false, null, <<"really-now?">>], mmynapi_encode:to_json_form([1,<<"foobar">>, false, null, 'really-now?']))},
+        {"Convert '#mmyn.fault{}' record",
+            ?_assertEqual(
+                {[
+                        {<<"code">>, 0},
+                        {<<"detail">>, <<"All okay">>}]},
+                mmynapi_encode:to_json_form(#'mmyn.fault'{
+                        code=0,detail = <<"All okay">>}))},
         {"Convert '#res.notify{}' record",
             ?_assertEqual(
                 {[
