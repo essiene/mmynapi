@@ -169,5 +169,16 @@ to_body(<<"res.notify">>, {PropList}) ->
                             end
                     end
             end
+    end;
+to_body(<<"mmyn.fault">>, {PropList}) ->
+    case proplists:get_value(<<"code">>, PropList) of
+        undefined ->
+            {error, no_code};
+        Code ->
+            case proplists:get_value(<<"detail">>, PropList) of
+                undefined ->
+                    {error, no_detail};
+                Detail -> 
+                    {ok, #'mmyn.fault'{code=Code, detail=Detail}}
+            end
     end.
-
