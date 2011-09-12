@@ -46,6 +46,10 @@ to_json_form(#'res.notify'{status=S, detail=D, wait_for_reply=W, ttl=T}) ->
             {<<"detail">>, to_json_form(D)},
             {<<"wait_for_reply">>, to_json_form(W)},
             {<<"ttl">>, to_json_form(T)}]};
+to_json_form(#'mmyn.fault'{code=S, detail=D}) ->
+    {[
+            {<<"code">>, to_json_form(S)},
+            {<<"detail">>, to_json_form(D)}]};
 to_json_form(null=M) ->
     M;
 to_json_form(M) when is_boolean(M) ->
