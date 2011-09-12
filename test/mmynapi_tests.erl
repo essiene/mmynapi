@@ -41,7 +41,11 @@ to_json_test_() ->
             ?_assertEqual(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"res.notify\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All Okay\",\"wait_for_reply\":false,\"ttl\":60}}">>,
                 mmynapi:to_json('mmyn', '0xdeadbeef', #'res.notify'{
                             status=0, detail= <<"All Okay">>,
-                            wait_for_reply=false, ttl=60}))}
+                            wait_for_reply=false, ttl=60}))},
+        {"Convert #'mmyn.fault'{} to JSON via mmynapi:to_json/3",
+            ?_assertEqual(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"mmyn.fault\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"code\":0,\"detail\":\"All Okay\"}}">>,
+                mmynapi:to_json('mmyn', '0xdeadbeef', #'mmyn.fault'{
+                            code=0, detail= <<"All Okay">>}))}
    ].
 
 from_json_test_() ->
@@ -97,5 +101,13 @@ from_json_test_() ->
                             system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
                         b=#'res.notify'{
                             status= 0, detail= <<"All okay!">>, wait_for_reply=true, ttl=60}}},
-                    mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"res.notify\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All okay!\",\"wait_for_reply\":true,\"ttl\":60}}">>))}
+                    mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"res.notify\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"status\":0,\"detail\":\"All okay!\",\"wait_for_reply\":true,\"ttl\":60}}">>))},
+        {"Convert mmyn.fault JSON document to #'mmyn.message'{} ",
+            ?_assertEqual({ok, #'mmyn.message'{
+                        h=#'mmyn.header'{ 
+                            vsn= [2,0,1], type= <<"mmyn.fault">>, 
+                            system= <<"mmyn">>, transaction_id= <<"0xdeadbeef">>},
+                        b=#'mmyn.fault'{
+                            code= 0, detail= <<"All okay!">>}}},
+                    mmynapi:from_json(<<"{\"header\":{\"vsn\":[2,0,1],\"type\":\"mmyn.fault\",\"system\":\"mmyn\",\"transaction_id\":\"0xdeadbeef\"},\"body\":{\"code\":0,\"detail\":\"All okay!\"}}">>))}
     ].
