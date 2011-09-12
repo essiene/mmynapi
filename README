@@ -82,5 +82,5 @@ res.notify() =
 mmyn.fault() =
 {
     "code" = integer(),
-    "message" = string()
+    "detail" = string()
 };
