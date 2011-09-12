@@ -23,14 +23,16 @@ mmyn-message() =
      
      "mmyn.body" = req.sendsms() | res.sendsms() | 
                    req.reply() | res.reply() | 
-                   req.notify(), res.notify()
+                   req.notify()| res.notify() |
+                   mmyn.fault()
 };
 
 mmyn-msg-vsn() = [Major,Minor,PatchLevel]; //current version is [2,0,1]
 
 mmyn-msg-type() = "req.sendsms" | "req.reply" |
                    "req.notify" | "res.sendsms" |
-                   "res.reply" | "res.notify";
+                   "res.reply" | "res.notify" |
+                   "mmyn.fault" ;
 
 req.sendsms() = 
 {
@@ -75,4 +77,10 @@ res.notify() =
     "detail" = string(), 
     "wait_for_reply" = boolean(), 
     "ttl" = integer() 
+};
+
+mmyn.fault() =
+{
+    "code" = integer(),
+    "message" = string()
 };
