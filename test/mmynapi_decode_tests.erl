@@ -246,6 +246,22 @@ decode_body_test_() ->
                         mmynapi_decode:to_body(<<"res.notify">>, {[ 
                                     {<<"status">>, 15}, 
                                     {<<"detail">>, <<"oops! my bad...">>},
-                                    {<<"wait_for_reply">>, true}]}))}
+                                    {<<"wait_for_reply">>, true}]}))},
+        %%
+        %% mmyn.fault tests start from here
+        %%
+        {"Convert a correct mmyn.fault in JSON form to #'mmyn.fault'{} record",
+            ?_assertEqual({ok, #'mmyn.fault'{
+                        code= 15,
+                        detail= <<"oops! my bad...">>}}, 
+                        mmynapi_decode:to_body(<<"mmyn.fault">>, {[ 
+                                    {<<"code">>, 15}, 
+                                    {<<"detail">>, <<"oops! my bad...">>}]}))},
+        {"Error out when mmyn.fault JSON form is missing a 'code' field",
+            ?_assertEqual({error, no_code}, 
+                        mmynapi_decode:to_body(<<"mmyn.fault">>, {[{<<"detail">>, <<"oops! my bad...">>}]}))},
+        {"Error out when mmyn.fault JSON form is missing a 'detail' field",
+            ?_assertEqual({error, no_detail}, 
+                        mmynapi_decode:to_body(<<"mmyn.fault">>, {[{<<"code">>, 15}]}))}
     ].
 
