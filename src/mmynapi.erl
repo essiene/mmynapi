@@ -45,6 +45,13 @@ to_json(System, Tid, #'res.notify'{}=B) ->
         system = System,
         transaction_id = Tid},
     M = #'mmyn.message'{h=H, b=B},
+    to_json(M);
+to_json(System, Tid, #'mmyn.fault'{}=B) ->
+    H = #'mmyn.header'{
+        type = 'mmyn.fault',
+        system = System,
+        transaction_id = Tid},
+    M = #'mmyn.message'{h=H, b=B},
     to_json(M).
 
 to_json(#'mmyn.message'{}=Msg) ->
