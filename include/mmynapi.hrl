@@ -52,6 +52,10 @@
         wait_for_reply,
         ttl}).
 
+-record('mmyn.fault', {
+        code,
+        detail}).
+
 
 
 -endif.
