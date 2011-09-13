@@ -57,5 +57,8 @@
         detail}).
 
 
+-record('callopts', {
+        url="",headers=[],opts=[]}).
+
 
 -endif.
